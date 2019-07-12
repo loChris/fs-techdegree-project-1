@@ -7,50 +7,106 @@ project 1 - A Random Quote Generator
 
 
 /*** 
-  Create the array of quote objects and name it `quotes`.
-  Add at least five quote objects to the `quotes` array.
-  Give each quote object a `quote` and `source` property.
-  Add the `citation` property to at least one object in the array.
-  Add the `year` property to at least one object in the array.
-  Use console.log() to log your array of quotes to the console.
+  This array holds objects which include the quote itself, who said it, and a general categorization of it.
+  Also, if it applies, it holds the citation and year.
 ***/
+var quotes = [{
+    quote: 'All that we are is the result of what we have thought.',
+    source: 'Buddha',
+    tag: 'Inspirational'
+  },
+  {
+    quote: 'No, I am your father.',
+    source: 'Darth Vader',
+    citation: 'Star Wars: Episode V - The Empire Strikes Back',
+    year: 1980,
+    tag: 'Movie'
+  },
+  {
+    quote: 'I have no special talent. I am only passionately curious.',
+    source: 'Albert Einstein',
+    tag: 'Inspirational'
+  },
+  {
+    quote: 'It always seems impossible untils it\'s done.',
+    source: 'Nelson Mandela',
+    tag: 'Inspirational'
+  },
+  {
+    quote: 'What are you lookin\' at, butthead?',
+    source: 'Biff Tannen',
+    citation: 'Back to the Future',
+    year: 1985,
+    tag: 'Movie'
+  }
+];
 
+
+
+/*** 
+  This function changes the background color of the html body
+***/
+function changeBackgroundColor() {
+  var x = Math.floor(Math.random() * 256);
+  var y = Math.floor(Math.random() * 256);
+  var z = Math.floor(Math.random() * 256);
+  var backgroundColor = "rgb(" + x + "," + y + "," + z + ")";
+  document.body.style.background = backgroundColor;
+}
 
 
 
 /***
-  Create the `getRandomQuote` function to:
-   - Create a variable to store a random number 
-   - Cse the random number to `return` a random quote object from the `quotes` array.
+  This function is in charge of generating a random number and according to 
+  that number, it'll return a quote from the quotes array with all of its properties
 ***/
-
+function getRandomQuote() {
+  let generateRandomQuote = Math.floor(Math.random() * (5 - 0) + 0);
+  return quotes[generateRandomQuote];
+}
 
 
 
 /***
-  Create the `printQuote` function to: 
-   - Call the `getRandomQuote` function and assign it to a variable.
-   - Create a variable for the HTML string and set it equal to an empty string.
-   - Use the HTML template in the instructions or the markup in the index.html file, AND 
-     the random quote vairable to build your HTML string.
-   - Add the quote and source section to the HTML string.
-   - Use an if statement to check for the citation property before adding it to the HTML string.
-   - Use an if statement to check for the year property before adding it to the HTML string.
-   - Don't forget to close that final `p` tag.
-   - Set the `innerHTML` of the `quote-box` div to the HTML string. 
+  This function takes the quote "picked" by the getRandomQuote function
+  and uses the existing classes in the .html file to replace their content with
+  our quote AND it is also in charge of executing the changeBackgroundColor function
 ***/
+function printQuote() {
+  changeBackgroundColor();
+  let randomQuote = getRandomQuote();
+  let html = '';
 
+  html += '<p class="quote">' + randomQuote.quote + '</p>';
+  html += '<p class="source">' + randomQuote.source;
+
+  if (randomQuote.citation) {
+    html += '<span class="citation">' + randomQuote.citation + '</span>';
+  }
+
+  if (randomQuote.year) {
+    html += '<span class="year">' + randomQuote.year + '</span>'
+  }
+
+  html += '</p>';
+  html += '<p class="tag">' + randomQuote.tag + '</p>';
+
+  let htmlObject = document.getElementById('quote-box');
+  htmlObject.innerHTML = html;
+}
 
 
 
 /***
-  When the "Show another quote" button is clicked, the event listener 
-  below will be triggered, and it will call, or "invoke", the `printQuote` 
-  function. So do not make any changes to the line of code below this 
-  comment.
-***/
-
+ this programs the button to listen for an event and 
+ execute the function printQuote() accordingly
+ ***/
 document.getElementById('loadQuote').addEventListener("click", printQuote, false);
 
 
-// Remember to delete the comments that came with this file, and replace them with your own code comments.
+
+/***
+If the user doesn't click on the loadQuote button, 
+this takes care of cycling through the quotes itself every 15 seconds
+***/
+setInterval(printQuote, 15000);
